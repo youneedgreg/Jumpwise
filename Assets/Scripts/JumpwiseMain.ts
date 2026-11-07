@@ -10,7 +10,7 @@
  * step state outside JumpSequence.
  */
 
-import {CONNECT_STEPS, DEAD_STARTED_TEXT, JumpSequence, START_DEAD_BUTTON, START_DEAD_TEXT, START_DONOR_BUTTON, START_DONOR_TEXT, StepDef, ZoneId,
+import {carOf, CONNECT_STEPS, DEAD_STARTED_TEXT, JumpSequence, START_DEAD_BUTTON, START_DEAD_TEXT, START_DONOR_BUTTON, START_DONOR_TEXT, StepDef, ZoneId,
   ClampId} from "./JumpwiseSteps"
 import {findAimedZone, ZoneProbe} from "./JumpwiseDropZones"
 import {JumpwiseClampController} from "./JumpwiseClampController"
@@ -168,7 +168,11 @@ export class JumpwiseMain extends BaseScriptComponent {
       this.audio.playClick()
       this.markers.get(step.zone)!.setState("done")
       if (this.seq.phase === "startDonor") this.enterStartDonor()
-      else this.enterStep(true)
+      else {
+        // Chime only when the next target is on the other car (brief: steps 2 and 3 are behind; step 4 sends you back).
+        const next = this.seq.currentStep()
+        this.enterStep(next !== null && carOf(next.zone) !== carOf(step.zone))
+      }
       return
     }
 

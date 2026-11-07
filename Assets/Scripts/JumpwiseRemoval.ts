@@ -13,7 +13,7 @@
  * block in JumpwiseSteps.ts and the lines marked "removal" in JumpwiseMain.ts.
  */
 
-import {ClampId, CONNECT_STEPS, DONE_TEXT, JumpSequence, REMOVE_BUTTON, REMOVE_TEXT, StepDef, ZoneId} from "./JumpwiseSteps"
+import {carOf, ClampId, CONNECT_STEPS, DONE_TEXT, JumpSequence, REMOVE_BUTTON, REMOVE_TEXT, StepDef, ZoneId} from "./JumpwiseSteps"
 import {JumpwiseClampController} from "./JumpwiseClampController"
 import {JumpwiseMarkerUI} from "./JumpwiseMarkerUI"
 import {JumpwiseStepCardUI} from "./JumpwiseStepCardUI"
@@ -91,7 +91,11 @@ export class JumpwiseRemoval {
     this.v.audio.playClick()
     this.v.markers.get(step.zone)!.setState("hidden")
     if (this.seq.phase === "done") this.enterDone(step)
-    else this.enterStep(true)
+    else {
+      // Chime only when the next clamp is on the other car.
+      const next = this.seq.removalStep()
+      this.enterStep(next !== null && carOf(next.zone) !== carOf(step.zone))
+    }
   }
 
   // ── View states

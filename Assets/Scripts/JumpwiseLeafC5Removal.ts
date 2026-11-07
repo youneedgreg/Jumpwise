@@ -132,6 +132,9 @@ export class JumpwiseLeafC5Removal extends Scenario {
         expect(main.audio.getCounts().chime).toBe(chimes + 1)
         expect(main.guidance.isArrowShown()).toBe(true)
         note(`C5 removal: chime + arrow toward ${REMOVAL_ORDER[i + 1][1]}`)
+      } else {
+        // Same car (step 2 after 3) or the end: no chime.
+        expect(main.audio.getCounts().chime).toBe(chimes)
       }
     }
 

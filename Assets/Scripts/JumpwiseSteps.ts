@@ -62,6 +62,11 @@ export const START_DEAD_TEXT = "Let the donor car run a few minutes, then start 
 export const START_DEAD_BUTTON = "Dead car started"
 export const DEAD_STARTED_TEXT = "Dead car started"
 
+/** Which car a drop zone is on. The chime only plays when the next target is on the other car. */
+export function carOf(zone: ZoneId): "dead" | "donor" {
+  return zone === "donorPlus" || zone === "donorMinus" ? "donor" : "dead"
+}
+
 // ── Phase 2 (removal): the same CONNECT_STEPS walked backwards, black first.
 // Cut removal by deleting this block, the removal methods at the end of
 // JumpSequence, JumpwiseRemoval.ts and the routing lines marked "removal" in Main.

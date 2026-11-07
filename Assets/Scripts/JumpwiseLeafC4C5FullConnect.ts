@@ -41,13 +41,21 @@ export class JumpwiseLeafC4C5FullConnect extends Scenario {
     expectNoStartButton(main, "after 1 clamp")
 
     lookAt(zonePos(main, "donorPlus"))
+    const chimesBefore2 = main.audio.getCounts().chime
     await placeClamp(ix, main, "redB", "donorPlus")
     expect(main.getStepIndex()).toBe(2)
+    // Step 3 is on the same (donor) car: no chime.
+    expect(main.audio.getCounts().chime).toBe(chimesBefore2)
+    note("C3 rule: no chime from step 2 to 3 (same car)")
     await frames(3)
     expectNoStartButton(main, "after 2 clamps")
 
     await placeClamp(ix, main, "blackB", "donorMinus")
     expect(main.getStepIndex()).toBe(3)
+    // Step 4 sends you back to the dead car, behind you: one chime and the arrow.
+    expect(main.audio.getCounts().chime).toBe(chimesBefore2 + 1)
+    expect(main.guidance.isArrowShown()).toBe(true)
+    note("C3 rule: chime + arrow from step 3 to 4 (back to the dead car)")
     await frames(3)
     expectNoStartButton(main, "after 3 clamps")
 
