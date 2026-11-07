@@ -198,6 +198,7 @@ export class JumpwiseStepCardUI extends BaseScriptComponent {
   isWarningShown(): boolean { return this.warning !== null }
   isNextShown(): boolean { return this.nextVisible && this.anchor !== null }
   isShown(): boolean { return this.anchor !== null }
+  getNextLabel(): string { return this.nextLabel ? this.nextLabel.text : "" }
 
   private refreshText(): void {
     if (!this.messageText) return

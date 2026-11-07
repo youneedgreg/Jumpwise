@@ -151,3 +151,25 @@ export function textOf(name: string, parentName?: string): Text | null {
   const so = findSceneObjectByName(name, root)
   return so ? (so.getComponent("Component.Text") as Text) : null
 }
+
+/**
+ * Run the whole connect flow through input: "Found battery", the four clamps in
+ * the safe order, then "Start donor car". Used by the removal scenario.
+ */
+export async function connectAndStartDonor(ix: JumpwiseLeafInteractor, main: JumpwiseMain): Promise<void> {
+  await pressButton(ix, "FoundBatteryButton")
+  await frames(5)
+  const order: [ClampId, ZoneId][] = [["redA", "deadPlus"], ["redB", "donorPlus"], ["blackB", "donorMinus"],
+    ["blackA", "ground"]]
+  for (const [clamp, zone] of order) {
+    lookAt(zonePos(main, zone))
+    await placeClamp(ix, main, clamp, zone)
+  }
+  if (main.getPhase() !== "startDonor") throw new Error("connect flow did not finish: phase " + main.getPhase())
+  await frames(5)
+  lookAt(main.stepCard.getTransform().getWorldPosition())
+  await frames(3)
+  await pressButton(ix, "NextButton")
+  await frames(5)
+  if (main.getPhase() !== "donorStarted") throw new Error("donor car not started: phase " + main.getPhase())
+}

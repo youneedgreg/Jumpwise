@@ -1,5 +1,5 @@
 /**
- * JumpwiseMain — orchestrates the jump-start guide (connect flow, phase 1).
+ * JumpwiseMain — orchestrates the jump-start guide (connect flow; removal is routed to JumpwiseRemoval).
  *
  * Owns: the JumpSequence state, and the wiring between the clamps, the markers,
  * the step card, the "Found battery" panel, guidance (chime + edge arrow) and
@@ -19,6 +19,7 @@ import {JumpwiseStepCardUI} from "./JumpwiseStepCardUI"
 import {JumpwiseFoundBatteryUI} from "./JumpwiseFoundBatteryUI"
 import {JumpwiseGuidance} from "./JumpwiseGuidance"
 import {JumpwiseAudioController} from "./JumpwiseAudioController"
+import {JumpwiseRemoval} from "./JumpwiseRemoval" // removal
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider"
 
 @component
@@ -82,6 +83,7 @@ export class JumpwiseMain extends BaseScriptComponent {
   private markers: Map<ZoneId, JumpwiseMarkerUI> = new Map()
   private ready = false
   private log: string[] = []
+  private removal!: JumpwiseRemoval // removal
 
   onAwake(): void {
     this.createEvent("OnStartEvent").bind(() => this.onStart())
@@ -98,6 +100,12 @@ export class JumpwiseMain extends BaseScriptComponent {
     this.markers.set("donorPlus", this.markerDonorPlus)
     this.markers.set("donorMinus", this.markerDonorMinus)
     this.markers.set("ground", this.markerGround)
+
+    this.removal = new JumpwiseRemoval(this.seq, { // removal
+      clamps: this.clamps, markers: this.markers, stepCard: this.stepCard, guidance: this.guidance,
+      audio: this.audio, zonePosition: (z) => this.zonePosition(z), aimedZone: (t) => this.aimedZone(t),
+      note: (m) => this.note(m),
+    })
 
     this.foundBatteryUI.onFoundBattery.add(() => this.onFoundBattery())
     this.stepCard.onNext.add(() => this.onNext())
@@ -121,6 +129,7 @@ export class JumpwiseMain extends BaseScriptComponent {
   }
 
   private onClampGrabbed(id: ClampId): void {
+    if (this.removal.isActive()) { this.removal.onGrabbed(id); return } // removal
     if (!this.seq.grab(id)) {
       // not the current clamp: should not happen (it is not grabbable) — put it back
       this.clamps.get(id)!.returnToRack()
@@ -141,6 +150,7 @@ export class JumpwiseMain extends BaseScriptComponent {
   }
 
   private onClampReleased(id: ClampId, tip: vec3): void {
+    if (this.removal.isActive()) { this.removal.onReleased(id, tip); return } // removal
     const step = this.seq.currentStep()
     // Only a clamp that is being carried can be dropped (guards against a repeated release).
     if (step === null || step.clamp !== id || this.seq.sub !== "carry") return
@@ -182,6 +192,9 @@ export class JumpwiseMain extends BaseScriptComponent {
       this.note("donor started")
       this.stepCard.hideNext()
       this.stepCard.setMessage(DONOR_STARTED_TEXT)
+      this.removal.offer() // removal: "Remove clamps" on the same Next button
+    } else if (this.seq.phase === "donorStarted") {
+      this.removal.start() // removal
     }
   }
 
@@ -267,6 +280,8 @@ export class JumpwiseMain extends BaseScriptComponent {
   isReady(): boolean { return this.ready }
   getPhase(): string { return this.seq.phase }
   getStepIndex(): number { return this.seq.index }
+  getRemoveIndex(): number { return this.seq.removeIndex }
+  getRemovalStep(): StepDef | null { return this.seq.removalStep() }
   getSubState(): string { return this.seq.sub }
   getCurrentStep(): StepDef | null { return this.seq.currentStep() }
   getLog(): string[] { return this.log.slice() }

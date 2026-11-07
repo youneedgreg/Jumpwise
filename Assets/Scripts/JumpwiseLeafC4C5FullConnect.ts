@@ -4,7 +4,7 @@
  * 4: the last black clamp accepts only the bare-metal ground point, not the
  *    dead battery's - terminal.
  * 5 (connect half): "Start donor car" appears only after four correct clamps.
- * Removal (the other half of 5) is phase 2 and is not tested here.
+ * Removal (the other half of 5) is tested in JumpwiseLeafC5Removal.
  */
 
 import {Scenario} from "Leaf.lspkg/Scenarios/scenario/Scenario"
@@ -91,7 +91,9 @@ export class JumpwiseLeafC4C5FullConnect extends Scenario {
     await frames(5)
     expect(main.getPhase()).toBe("donorStarted")
     expect(main.stepCard.getMessage()).toBe("Donor car started")
-    expect(main.stepCard.isNextShown()).toBe(false)
+    // Phase 2: the same Next button now offers "Remove clamps" (brief: shows after "Start donor car" is pinched).
+    expect(main.stepCard.isNextShown()).toBe(true)
+    expect(main.stepCard.getNextLabel()).toBe("Remove clamps")
     note("C5 connect half done")
   }
 }

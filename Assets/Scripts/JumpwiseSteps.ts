@@ -58,9 +58,30 @@ export const START_DONOR_TEXT = "Start the donor car"
 export const START_DONOR_BUTTON = "Start donor car"
 export const DONOR_STARTED_TEXT = "Donor car started"
 
+// ── Phase 2 (removal): the same CONNECT_STEPS walked backwards, black first.
+// Cut removal by deleting this block, the removal methods at the end of
+// JumpSequence, JumpwiseRemoval.ts and the routing lines marked "removal" in Main.
+
+export const REMOVE_BUTTON = "Remove clamps"
+export const DONE_TEXT = "Done"
+
+/** Card text per clamp while removing: take = clamp still on, carry = clamp lifted. */
+export const REMOVE_TEXT: Record<ClampId, {takeText: string; carryText: string}> = {
+  blackA: {takeText: "Take the black clamp off bare metal", carryText: "Let go: it goes back to the rack"},
+  blackB: {takeText: "Take the black clamp off - on the donor battery", carryText: "Let go: it goes back to the rack"},
+  redB: {takeText: "Take the red clamp off + on the donor battery", carryText: "Let go: it goes back to the rack"},
+  redA: {takeText: "Take the red clamp off + on the dead battery", carryText: "Let go: it goes back to the rack"},
+}
+
+/** Removal order: CONNECT_STEPS reversed (4, 3, 2, 1). */
+export function removalStepAt(i: number): StepDef | null {
+  const n = CONNECT_STEPS.length
+  return i >= 0 && i < n ? CONNECT_STEPS[n - 1 - i] : null
+}
+
 export const SPARK_REASON = "Not here: a spark near the battery can ignite its gases. Use bare metal."
 
-export type Phase = "findBattery" | "connect" | "startDonor" | "donorStarted"
+export type Phase = "findBattery" | "connect" | "startDonor" | "donorStarted" | "remove" | "done"
 export type SubState = "take" | "carry"
 
 export interface DropVerdict {
@@ -94,9 +115,13 @@ export class JumpSequence {
   /** Zones that currently hold a clamp. */
   private occupied: Set<ZoneId> = new Set<ZoneId>()
 
+  /** Removal progress: 0..4, how many clamps are off (phase 2). */
+  removeIndex: number = 0
+
   reset(): void {
     this.phase = "findBattery"
     this.index = 0
+    this.removeIndex = 0
     this.sub = "take"
     this.occupied.clear()
   }
@@ -115,9 +140,9 @@ export class JumpSequence {
     return CONNECT_STEPS[this.index] ?? null
   }
 
-  /** Only the current clamp can be grabbed (brief default). */
+  /** Only the current clamp can be grabbed, on the way on and on the way off (brief default). */
   canGrab(clamp: ClampId): boolean {
-    const step = this.currentStep()
+    const step = this.phase === "remove" ? this.removalStep() : this.currentStep()
     return step !== null && step.clamp === clamp && this.sub === "take"
   }
 
@@ -166,5 +191,38 @@ export class JumpSequence {
     if (this.phase !== "startDonor") return false
     this.phase = "donorStarted"
     return true
+  }
+
+  // ── Phase 2 (removal): reverse traversal of CONNECT_STEPS, same state.
+
+  /** "Remove clamps" pinched. Only valid after the donor car was started. */
+  startRemoval(): boolean {
+    if (this.phase !== "donorStarted") return false
+    this.phase = "remove"
+    this.removeIndex = 0
+    this.sub = "take"
+    return true
+  }
+
+  /** The step whose clamp comes off next (4, then 3, 2, 1), or null. */
+  removalStep(): StepDef | null {
+    if (this.phase !== "remove") return null
+    return removalStepAt(this.removeIndex)
+  }
+
+  /** The lifted clamp was put straight back on its own terminal: not removed. */
+  cancelRemoval(): void {
+    if (this.phase === "remove") this.sub = "take"
+  }
+
+  /** The lifted clamp went back to the rack. Returns the step that was undone. */
+  commitRemoval(): StepDef | null {
+    const step = this.removalStep()
+    if (step === null || this.sub !== "carry") return null
+    this.occupied.delete(step.zone)
+    this.removeIndex++
+    this.sub = "take"
+    if (this.removeIndex >= CONNECT_STEPS.length) this.phase = "done"
+    return step
   }
 }

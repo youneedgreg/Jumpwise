@@ -10,6 +10,7 @@ import {JumpwiseLeafC1FoundBattery} from "./JumpwiseLeafC1FoundBattery"
 import {JumpwiseLeafC2WrongTerminal} from "./JumpwiseLeafC2WrongTerminal"
 import {JumpwiseLeafC3ChimeArrow} from "./JumpwiseLeafC3ChimeArrow"
 import {JumpwiseLeafC4C5FullConnect} from "./JumpwiseLeafC4C5FullConnect"
+import {JumpwiseLeafC5Removal} from "./JumpwiseLeafC5Removal"
 import {JumpwiseLeafRiskTurnDrag} from "./JumpwiseLeafRiskTurnDrag"
 import {JumpwiseLeafViewStart} from "./JumpwiseLeafViewStart"
 import {JumpwiseLeafViewStep1} from "./JumpwiseLeafViewStep1"
@@ -22,6 +23,7 @@ export class JumpwiseLeafIndex extends BaseScriptComponent {
     {id: "jw-c2-wrong-terminal", typename: JumpwiseLeafC2WrongTerminal.getTypeName()},
     {id: "jw-c3-chime-arrow", typename: JumpwiseLeafC3ChimeArrow.getTypeName()},
     {id: "jw-c4-c5-full-connect", typename: JumpwiseLeafC4C5FullConnect.getTypeName()},
+    {id: "jw-c5-removal", typename: JumpwiseLeafC5Removal.getTypeName()},
     {id: "jw-risk-turn-drag", typename: JumpwiseLeafRiskTurnDrag.getTypeName()},
     // view poses for screenshots (no assertions)
     {id: "jw-view-start", typename: JumpwiseLeafViewStart.getTypeName()},

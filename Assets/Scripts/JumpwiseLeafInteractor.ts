@@ -67,6 +67,39 @@ export class JumpwiseLeafInteractor extends DefaultLeafInteractor {
   }
 
   /**
+   * Try to grab a clamp the way a hand would (aim, pinch, pull away for a moment, let go),
+   * with timeouts, so a clamp that refuses the grab does not hang the test.
+   * Reports whether hover and the pinch trigger reached it; the caller checks
+   * that the clamp did not move.
+   */
+  async tryGrab(target: Interactable, tip: () => vec3, pullToward: vec3, timeoutMs: number = 800):
+      Promise<{hovered: boolean; triggered: boolean}> {
+    let hovered = false
+    let triggered = false
+    awaitEventOnce(target.onHoverEnter).then(() => { hovered = true })
+    awaitEventOnce(target.onTriggerStart).then(() => { triggered = true })
+    await this.setTarget(target)
+    const tHover = getTime() + timeoutMs / 1000
+    while (!hovered && getTime() < tHover) await nextFrame()
+    this.startSelecting()
+    const tTrig = getTime() + timeoutMs / 1000
+    while (!triggered && getTime() < tTrig) await nextFrame()
+    this.rayDir = this.endPoint.sub(this.startPoint).normalize()
+    const away = pullToward.sub(this.eye()).normalize()
+    for (let i = 0; i < 20; i++) {
+      this.steer(tip, away)
+      await nextFrame()
+    }
+    this.stopSelecting()
+    for (let i = 0; i < 3; i++) await nextFrame()
+    this.resetStartEndPoint()
+    this.overrideDragVector = undefined
+    this.overrideInteractable = undefined
+    await sleep(250)
+    return {hovered, triggered}
+  }
+
+  /**
    * While holding, steer the ray so the clamp tip lines up (as seen from the eye)
    * with `goal`, passing `via` points first. Returns the final angle error in radians.
    */
