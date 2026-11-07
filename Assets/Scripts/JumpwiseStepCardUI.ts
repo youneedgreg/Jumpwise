@@ -1,7 +1,7 @@
 /**
  * JumpwiseStepCardUI — the step card (~15 x 8 cm) and the big Next button beside it (passive view).
  *
- * Owns: one BackPlate card with one short line, an optional warning line style,
+ * Owns: one light-outlined card with one short line, an optional warning line style,
  * the Next button ("Start donor car"), and keeping the card beside an anchor
  * point (the current marker), turned to face you.
  * API (Main -> view): setMessage, showWarning, showNext, hideNext, setAnchor.
@@ -12,11 +12,11 @@
 import {FlexLayout} from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexLayout"
 import {FlexItem} from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexItem"
 import {FlexAlign, FlexDirection, FlexJustify} from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexTypes"
-import {BackPlate} from "SpectaclesUIKit.lspkg/Scripts/BackPlate"
 import {Button} from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button"
 import {Billboard} from "SpectaclesInteractionKit.lspkg/Components/Interaction/Billboard/Billboard"
 import WorldCameraFinderProvider from "SpectaclesInteractionKit.lspkg/Providers/CameraProvider/WorldCameraFinderProvider"
 import Event, {PublicApi} from "SpectaclesInteractionKit.lspkg/Utils/Event"
+import {addLightPlate} from "./JumpwiseLightPlate"
 
 const imageMaterial = requireAsset("../Materials/ImageMaterial.mat") as Material
 const ICON_NEXT = requireAsset("../Icons/arrow_forward.png") as Texture
@@ -105,8 +105,8 @@ export class JumpwiseStepCardUI extends BaseScriptComponent {
     bb.xAxisEnabled = true
     bb.yAxisEnabled = true
 
-    const nextW = 12
-    const nextH = 6
+    const nextW = 16
+    const nextH = 7
     const gap = 1.5
     this.row = this.obj(this.sceneObject, "Row")
     const flex = this.row.createComponent(FlexLayout.getTypeName()) as FlexLayout
@@ -122,13 +122,13 @@ export class JumpwiseStepCardUI extends BaseScriptComponent {
 
     // Card
     this.flexChild(this.row, "Card", {w: this.cardWidthCm, h: this.cardHeightCm}, (card) => {
-      const plate = card.createComponent(BackPlate.getTypeName()) as BackPlate
-      plate.size = new vec2(this.cardWidthCm, this.cardHeightCm)
+      // light outline plate (UIKit's BackPlate is dark grey: wrong for an additive display)
+      addLightPlate(card, "Plate", this.cardWidthCm, this.cardHeightCm, 0.06)
       const content = this.obj(card, "Content", new vec3(0, 0, CARD_CONTENT_Z))
       const t = content.createComponent("Component.Text") as Text
       t.text = ""
       t.depthTest = true
-      applyTextRole(t, "Body", READ_DISTANCE_CM)
+      applyTextRole(t, "HeadlineXL", READ_DISTANCE_CM)
       t.horizontalAlignment = HorizontalAlignment.Center
       t.verticalAlignment = VerticalAlignment.Center
       t.horizontalOverflow = HorizontalOverflow.Wrap
@@ -143,7 +143,10 @@ export class JumpwiseStepCardUI extends BaseScriptComponent {
     // Next button (hidden until Main asks for it)
     this.nextItem = this.flexChild(this.row, "NextButton", {w: nextW, h: nextH}, (so) => {
       const btn = so.createComponent(Button.getTypeName()) as Button
+      // Ghost = clear face that only lights its edge on hover/press; the light outline below is the resting look
+      btn.setVariant({theme: "SnapOS2", style: "Ghost"})
       btn.size = new vec3(nextW, nextH, 1)
+      addLightPlate(so, "Outline", nextW, nextH, 0.1, 0.03) // in front of the Ghost face (it writes depth), behind the label
       const face = this.obj(so, "Face", new vec3(0, 0, BUTTON_LABEL_Z))
       const faceFlex = face.createComponent(FlexLayout.getTypeName()) as FlexLayout
       faceFlex.autoDiscoverItemsOnStart = false // children are registered with addItems below
@@ -155,8 +158,8 @@ export class JumpwiseStepCardUI extends BaseScriptComponent {
         faceFlex.justifyContent = FlexJustify.Center
         faceFlex.alignItems = FlexAlign.Center
       })
-      this.nextLabel = this.addRowText(face, "Start donor car", "Button", nextW - 3.4)
-      this.addIcon(face, ICON_NEXT, 2.2)
+      this.nextLabel = this.addRowText(face, "Start donor car", "Headline1", nextW - 3.6)
+      this.addIcon(face, ICON_NEXT, 2.6)
       btn.onTriggerUp.add(() => {
         if (this.nextVisible) this._onNext.invoke()
       })
@@ -269,7 +272,7 @@ export class JumpwiseStepCardUI extends BaseScriptComponent {
     applyTextRole(t, role, READ_DISTANCE_CM)
     t.horizontalAlignment = HorizontalAlignment.Center
     t.verticalAlignment = VerticalAlignment.Center
-    t.horizontalOverflow = HorizontalOverflow.Overflow
+    t.horizontalOverflow = HorizontalOverflow.Shrink // long labels ("Dead car started") shrink to fit
     t.verticalOverflow = VerticalOverflow.Overflow
     t.layoutRect = Rect.create(-widthCM / 2, widthCM / 2, -1.2, 1.2)
     t.textFill.color = this.textColor

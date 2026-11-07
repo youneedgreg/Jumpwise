@@ -11,10 +11,10 @@
 import {FlexLayout} from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexLayout"
 import {FlexItem} from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexItem"
 import {FlexAlign, FlexDirection, FlexJustify} from "SpectaclesUIKit.lspkg/Scripts/Components/Layout2D/Flex/FlexTypes"
-import {BackPlate} from "SpectaclesUIKit.lspkg/Scripts/BackPlate"
 import {Button} from "SpectaclesUIKit.lspkg/Scripts/Components/Button/Button"
 import {Billboard} from "SpectaclesInteractionKit.lspkg/Components/Interaction/Billboard/Billboard"
 import Event, {PublicApi} from "SpectaclesInteractionKit.lspkg/Utils/Event"
+import {addLightPlate} from "./JumpwiseLightPlate"
 
 const imageMaterial = requireAsset("../Materials/ImageMaterial.mat") as Material
 const ICON_BATTERY = requireAsset("../Icons/battery_full.png") as Texture
@@ -107,7 +107,10 @@ export class JumpwiseFoundBatteryUI extends BaseScriptComponent {
     // Big "Found battery" button: battery icon + label
     this.flexChild(this.row, "FoundBatteryButton", {w: this.buttonWidthCm, h: this.buttonHeightCm}, (so) => {
       const btn = so.createComponent(Button.getTypeName()) as Button
+      // Ghost = clear face that only lights its edge on hover/press; the light outline below is the resting look
+      btn.setVariant({theme: "SnapOS2", style: "Ghost"})
       btn.size = new vec3(this.buttonWidthCm, this.buttonHeightCm, 1)
+      addLightPlate(so, "Outline", this.buttonWidthCm, this.buttonHeightCm, 0.1, 0.03) // in front of the Ghost face (it writes depth), behind the label
       const face = this.obj(so, "Face", new vec3(0, 0, BUTTON_LABEL_Z))
       const faceFlex = face.createComponent(FlexLayout.getTypeName()) as FlexLayout
       faceFlex.autoDiscoverItemsOnStart = false // children are registered with addItems below
@@ -121,7 +124,7 @@ export class JumpwiseFoundBatteryUI extends BaseScriptComponent {
       })
       this.addIcon(face, ICON_BATTERY, 3.6)
       // label cell sized to the text so icon + label sit together, centered
-      this.addRowText(face, this.buttonLabel, "Headline2", Math.min(11.5, this.buttonWidthCm - 6))
+      this.addRowText(face, this.buttonLabel, "Title2", Math.min(13, this.buttonWidthCm - 5))
       btn.onTriggerUp.add(() => {
         if (this.visible) this._onFoundBattery.invoke()
       })
@@ -129,8 +132,8 @@ export class JumpwiseFoundBatteryUI extends BaseScriptComponent {
 
     // Owner's manual card: book icon + one line
     this.flexChild(this.row, "ManualCard", {w: cardW, h: cardH}, (card) => {
-      const plate = card.createComponent(BackPlate.getTypeName()) as BackPlate
-      plate.size = new vec2(cardW, cardH)
+      // light outline plate (UIKit's BackPlate is dark grey: wrong for an additive display)
+      addLightPlate(card, "Plate", cardW, cardH, 0.06)
       const content = this.obj(card, "Content", new vec3(0, 0, CARD_CONTENT_Z))
       const cflex = content.createComponent(FlexLayout.getTypeName()) as FlexLayout
       cflex.autoDiscoverItemsOnStart = false // children are registered with addItems below
@@ -149,7 +152,7 @@ export class JumpwiseFoundBatteryUI extends BaseScriptComponent {
       const t = so.createComponent("Component.Text") as Text
       t.text = this.manualText
       t.depthTest = true
-      applyTextRole(t, "Body", READ_DISTANCE_CM)
+      applyTextRole(t, "Headline1", READ_DISTANCE_CM)
       t.horizontalAlignment = HorizontalAlignment.Left
       t.verticalAlignment = VerticalAlignment.Center
       t.horizontalOverflow = HorizontalOverflow.Wrap
@@ -205,7 +208,7 @@ export class JumpwiseFoundBatteryUI extends BaseScriptComponent {
     applyTextRole(t, role, READ_DISTANCE_CM)
     t.horizontalAlignment = HorizontalAlignment.Center
     t.verticalAlignment = VerticalAlignment.Center
-    t.horizontalOverflow = HorizontalOverflow.Overflow
+    t.horizontalOverflow = HorizontalOverflow.Shrink
     t.verticalOverflow = VerticalOverflow.Overflow
     t.layoutRect = Rect.create(-widthCM / 2, widthCM / 2, -1.5, 1.5)
     t.textFill.color = this.textColor
