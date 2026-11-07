@@ -1,0 +1,62 @@
+- !<AssetImportMetadata/4c657437-d05b-4c72-8a8e-3bbd15bf4e84>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 306aa0e5-5c70-414a-bfef-8332af7e1fb2
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 306aa0e5-5c70-414a-bfef-8332af7e1fb2
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 541340b4-6c95-46f1-b36d-7d6ab479a776
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/541340b4-6c95-46f1-b36d-7d6ab479a776>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 1446b592-4bca-455a-ba77-0131b7d38977
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    chimeTrack: false
+    clampClickTrack: false
+    sparkTrack: false
+    volume: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - chimeTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
+      sparkTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
+      clampClickTrack: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
+      volume: 0.900000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">JumpwiseAudioController – chime, spark and clamp-click cues</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References"}'
+    - '// @input Asset.AudioTrackAsset chimeTrack {"hint":"Chime played when the next target is out of view (the car behind you)."}'
+    - '// @input Asset.AudioTrackAsset sparkTrack {"hint":"Short spark played on a wrong clamp drop."}'
+    - '// @input Asset.AudioTrackAsset clampClickTrack {"hint":"Click played when a clamp goes on correctly."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float volume = 0.9 {"hint":"Volume for all three cues.", "widget":"slider", "min":0, "max":1, "step":0.05}'
+    - '// @ui {"widget":"group_end"}'

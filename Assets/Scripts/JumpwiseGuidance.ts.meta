@@ -1,0 +1,59 @@
+- !<AssetImportMetadata/e937f78d-e122-46fb-9b52-042aad9a35bf>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 9feddd43-512d-4eed-9a5d-51acbfdd170f
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 9feddd43-512d-4eed-9a5d-51acbfdd170f
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 80d68e3f-4999-425e-a4c0-86b9576c801a
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/80d68e3f-4999-425e-a4c0-86b9576c801a>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 541c4b44-6994-4f30-b414-72c0b3a749fc
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    arrow: false
+    audio: false
+    inViewHalfAngleDeg: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - arrow: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      audio: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      inViewHalfAngleDeg: !<float> 20.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">JumpwiseGuidance – chime and edge arrow for out-of-view targets</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References"}'
+    - '// @input AssignableType_1 arrow {"hint":"Edge arrow view that points toward the target."}'
+    - '// @input AssignableType_2 audio {"hint":"Audio cues (the chime)."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float inViewHalfAngleDeg = 20 {"hint":"A target counts as in view when it is within this angle of where you look (Specs display is about 46 degrees diagonal).", "widget":"slider", "min":5, "max":40, "step":1}'
+    - '// @ui {"widget":"group_end"}'

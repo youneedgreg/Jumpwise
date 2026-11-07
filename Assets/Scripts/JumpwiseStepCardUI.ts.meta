@@ -1,0 +1,65 @@
+- !<AssetImportMetadata/575981b6-95fc-4326-83a1-a1d6a1814ba1>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> beca0652-52f4-404d-a32b-e21997208875
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> beca0652-52f4-404d-a32b-e21997208875
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> d9f5fece-263d-436a-880b-4487cc648da4
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/d9f5fece-263d-436a-880b-4487cc648da4>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 90092cb9-0a96-4ea8-9c40-17af35ae6c01
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    cardHeightCm: false
+    cardWidthCm: false
+    offsetRightCm: false
+    offsetUpCm: false
+    textColor: false
+    warningColor: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - cardWidthCm: !<float> 15.000000
+      cardHeightCm: !<float> 8.000000
+      offsetRightCm: !<float> 19.000000
+      offsetUpCm: !<float> 7.000000
+      textColor: !<Vec4> {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}
+      warningColor: !<Vec4> {x: 1.000000, y: 0.620000, z: 0.550000, w: 1.000000}
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">JumpwiseStepCardUI – step card + Next button</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float cardWidthCm = 15 {"hint":"Card width in cm (brief: about 15).", "widget":"slider", "min":10, "max":30, "step":0.5}'
+    - '// @input float cardHeightCm = 8 {"hint":"Card height in cm (brief: about 8).", "widget":"slider", "min":5, "max":16, "step":0.5}'
+    - '// @input float offsetRightCm = 19 {"hint":"How far to the right of the marker the card sits, in cm.", "widget":"slider", "min":0, "max":40, "step":0.5}'
+    - '// @input float offsetUpCm = 7 {"hint":"How far above the marker the card sits, in cm.", "widget":"slider", "min":-20, "max":30, "step":0.5}'
+    - '// @input vec4 textColor = "{1,1,1,1}" {"hint":"Step text color (keep it light: the display is additive).", "widget":"color"}'
+    - '// @input vec4 warningColor = "{1,0.62,0.55,1}" {"hint":"Warning text color (light red).", "widget":"color"}'
+    - '// @ui {"widget":"group_end"}'

@@ -1,0 +1,59 @@
+- !<AssetImportMetadata/2d8a5be1-e3e0-4e18-9908-f1b07fba9f6d>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 6f32f1ea-5add-4577-8bdb-23079d10b958
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 6f32f1ea-5add-4577-8bdb-23079d10b958
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 9b9c34d5-d335-45b6-9f03-576bd7334d04
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/9b9c34d5-d335-45b6-9f03-576bd7334d04>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 251a90e2-e0fb-4583-8dda-d3a0f399bac4
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    arrowColor: false
+    arrowSizeCm: false
+    depthCm: false
+    edgeOffsetCm: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - depthCm: !<float> 60.000000
+      edgeOffsetCm: !<float> 9.000000
+      arrowSizeCm: !<float> 4.000000
+      arrowColor: !<Vec3> {x: 1.000000, y: 0.820000, z: 0.300000}
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">JumpwiseEdgeArrowUI – edge-of-view arrow</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float depthCm = 60 {"hint":"How far in front of your eyes the arrow floats, in cm.", "widget":"slider", "min":30, "max":150, "step":5}'
+    - '// @input float edgeOffsetCm = 9 {"hint":"How far from the center of view the arrow sits, in cm (at that depth).", "widget":"slider", "min":2, "max":20, "step":0.5}'
+    - '// @input float arrowSizeCm = 4 {"hint":"Arrow size in cm.", "widget":"slider", "min":1, "max":10, "step":0.5}'
+    - '// @input vec3 arrowColor = "{1.0,0.82,0.3}" {"hint":"Arrow color (light, so it shows on the additive display).", "widget":"color"}'
+    - '// @ui {"widget":"group_end"}'
