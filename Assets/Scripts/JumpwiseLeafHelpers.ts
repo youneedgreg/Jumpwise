@@ -154,7 +154,7 @@ export function textOf(name: string, parentName?: string): Text | null {
 
 /**
  * Run the whole connect flow through input: "Found battery", the four clamps in
- * the safe order, then "Start donor car". Used by the removal scenario.
+ * the safe order, then "Start donor car" and "Dead car started". Used by the removal scenario.
  */
 export async function connectAndStartDonor(ix: JumpwiseLeafInteractor, main: JumpwiseMain): Promise<void> {
   await pressButton(ix, "FoundBatteryButton")
@@ -172,4 +172,8 @@ export async function connectAndStartDonor(ix: JumpwiseLeafInteractor, main: Jum
   await pressButton(ix, "NextButton")
   await frames(5)
   if (main.getPhase() !== "donorStarted") throw new Error("donor car not started: phase " + main.getPhase())
+  await frames(3)
+  await pressButton(ix, "NextButton") // "Dead car started"
+  await frames(5)
+  if (main.getPhase() !== "deadStarted") throw new Error("dead car not started: phase " + main.getPhase())
 }

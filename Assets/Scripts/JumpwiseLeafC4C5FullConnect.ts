@@ -11,7 +11,7 @@ import {Scenario} from "Leaf.lspkg/Scenarios/scenario/Scenario"
 import {expect} from "Leaf.lspkg/Utils/common/Expect"
 import {sleep} from "Leaf.lspkg/Utils/common/Utils"
 import {findInteractableByName} from "Leaf.lspkg/Interactors/InteractableUtils"
-import {SPARK_REASON} from "./JumpwiseSteps"
+import {SPARK_REASON, START_DEAD_TEXT} from "./JumpwiseSteps"
 import {JumpwiseMain} from "./JumpwiseMain"
 import {JumpwiseLeafInteractor} from "./JumpwiseLeafInteractor"
 import {frames, getMain, holdHead, lookAt, note, placeClamp, pressButton, zonePos} from "./JumpwiseLeafHelpers"
@@ -90,8 +90,16 @@ export class JumpwiseLeafC4C5FullConnect extends Scenario {
     await pressButton(ix, "NextButton")
     await frames(5)
     expect(main.getPhase()).toBe("donorStarted")
-    expect(main.stepCard.getMessage()).toBe("Donor car started")
-    // Phase 2: the same Next button now offers "Remove clamps" (brief: shows after "Start donor car" is pinched).
+    // Next: start the dead car before any clamp comes off (brief, after Edmunds).
+    expect(main.stepCard.getMessage()).toBe(START_DEAD_TEXT)
+    expect(main.stepCard.isNextShown()).toBe(true)
+    expect(main.stepCard.getNextLabel()).toBe("Dead car started")
+    note("C5 after Start donor car: card asks to start the dead car")
+    await frames(3)
+    await pressButton(ix, "NextButton")
+    await frames(5)
+    expect(main.getPhase()).toBe("deadStarted")
+    // Phase 2: the same Next button now offers "Remove clamps" (brief: shows after "Dead car started" is pinched).
     expect(main.stepCard.isNextShown()).toBe(true)
     expect(main.stepCard.getNextLabel()).toBe("Remove clamps")
     note("C5 connect half done")

@@ -10,7 +10,7 @@
  * step state outside JumpSequence.
  */
 
-import {CONNECT_STEPS, DONOR_STARTED_TEXT, JumpSequence, START_DONOR_BUTTON, START_DONOR_TEXT, StepDef, ZoneId,
+import {CONNECT_STEPS, DEAD_STARTED_TEXT, JumpSequence, START_DEAD_BUTTON, START_DEAD_TEXT, START_DONOR_BUTTON, START_DONOR_TEXT, StepDef, ZoneId,
   ClampId} from "./JumpwiseSteps"
 import {findAimedZone, ZoneProbe} from "./JumpwiseDropZones"
 import {JumpwiseClampController} from "./JumpwiseClampController"
@@ -190,10 +190,15 @@ export class JumpwiseMain extends BaseScriptComponent {
   private onNext(): void {
     if (this.seq.phase === "startDonor" && this.seq.startDonor()) {
       this.note("donor started")
+      // Before any clamp comes off, the dead car is started (Edmunds jump-start order).
+      this.stepCard.setMessage(START_DEAD_TEXT)
+      this.stepCard.showNext(START_DEAD_BUTTON)
+    } else if (this.seq.phase === "donorStarted" && this.seq.startDead()) {
+      this.note("dead car started")
       this.stepCard.hideNext()
-      this.stepCard.setMessage(DONOR_STARTED_TEXT)
+      this.stepCard.setMessage(DEAD_STARTED_TEXT)
       this.removal.offer() // removal: "Remove clamps" on the same Next button
-    } else if (this.seq.phase === "donorStarted") {
+    } else if (this.seq.phase === "deadStarted") {
       this.removal.start() // removal
     }
   }

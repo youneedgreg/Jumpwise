@@ -74,8 +74,8 @@ export class JumpwiseLeafC5Removal extends Scenario {
     expect(grabbableClamps().length).toBe(0)
     expect(glowingClamps(main).length).toBe(0)
     await expectGrabRefused(ix, main, "redA", 0) // first on, but nothing comes off before "Remove clamps"
-    expect(main.getPhase()).toBe("donorStarted")
-    note("C5 removal: \"Remove clamps\" shown after \"Start donor car\"; no clamp grabbable yet")
+    expect(main.getPhase()).toBe("deadStarted")
+    note("C5 removal: \"Remove clamps\" shown after \"Dead car started\"; no clamp grabbable yet")
 
     lookAt(main.stepCard.getTransform().getWorldPosition())
     await frames(3)

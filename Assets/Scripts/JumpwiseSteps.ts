@@ -57,6 +57,10 @@ export const CONNECT_STEPS: StepDef[] = [
 export const START_DONOR_TEXT = "Start the donor car"
 export const START_DONOR_BUTTON = "Start donor car"
 export const DONOR_STARTED_TEXT = "Donor car started"
+/** After the donor car runs: start the dead car before any clamp comes off (Edmunds jump-start order). */
+export const START_DEAD_TEXT = "Let the donor car run a few minutes, then start the dead car"
+export const START_DEAD_BUTTON = "Dead car started"
+export const DEAD_STARTED_TEXT = "Dead car started"
 
 // ── Phase 2 (removal): the same CONNECT_STEPS walked backwards, black first.
 // Cut removal by deleting this block, the removal methods at the end of
@@ -81,7 +85,7 @@ export function removalStepAt(i: number): StepDef | null {
 
 export const SPARK_REASON = "Not here: a spark near the battery can ignite its gases. Use bare metal."
 
-export type Phase = "findBattery" | "connect" | "startDonor" | "donorStarted" | "remove" | "done"
+export type Phase = "findBattery" | "connect" | "startDonor" | "donorStarted" | "deadStarted" | "remove" | "done"
 export type SubState = "take" | "carry"
 
 export interface DropVerdict {
@@ -193,11 +197,18 @@ export class JumpSequence {
     return true
   }
 
+  /** "Dead car started" pinched. Only valid after the donor car was started. */
+  startDead(): boolean {
+    if (this.phase !== "donorStarted") return false
+    this.phase = "deadStarted"
+    return true
+  }
+
   // ── Phase 2 (removal): reverse traversal of CONNECT_STEPS, same state.
 
-  /** "Remove clamps" pinched. Only valid after the donor car was started. */
+  /** "Remove clamps" pinched. Only valid after the dead car was started. */
   startRemoval(): boolean {
-    if (this.phase !== "donorStarted") return false
+    if (this.phase !== "deadStarted") return false
     this.phase = "remove"
     this.removeIndex = 0
     this.sub = "take"
