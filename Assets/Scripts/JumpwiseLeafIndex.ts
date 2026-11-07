@@ -14,6 +14,7 @@ import {JumpwiseLeafC5Removal} from "./JumpwiseLeafC5Removal"
 import {JumpwiseLeafRiskTurnDrag} from "./JumpwiseLeafRiskTurnDrag"
 import {JumpwiseLeafViewStart} from "./JumpwiseLeafViewStart"
 import {JumpwiseLeafViewStep1} from "./JumpwiseLeafViewStep1"
+import {JumpwiseLeafViewLongText} from "./JumpwiseLeafViewLongText"
 
 @component
 export class JumpwiseLeafIndex extends BaseScriptComponent {
@@ -28,5 +29,6 @@ export class JumpwiseLeafIndex extends BaseScriptComponent {
     // view poses for screenshots (no assertions)
     {id: "jw-view-start", typename: JumpwiseLeafViewStart.getTypeName()},
     {id: "jw-view-step1", typename: JumpwiseLeafViewStep1.getTypeName()},
+    {id: "jw-view-long-text", typename: JumpwiseLeafViewLongText.getTypeName()},
   ]
 }
