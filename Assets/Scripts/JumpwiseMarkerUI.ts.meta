@@ -1,0 +1,71 @@
+- !<AssetImportMetadata/65970f3f-8389-4262-bd7a-e9780ca56700>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> e433a944-1020-4063-9e0a-0cf47f832dd3
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> e433a944-1020-4063-9e0a-0cf47f832dd3
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 31610f6e-f521-412c-8a1c-a8b2ae592f17
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/31610f6e-f521-412c-8a1c-a8b2ae592f17>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 1587afde-fefd-4148-94d5-3ab27c7de5fa
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    doneColor: false
+    pulseColor: false
+    ringDiameterCm: false
+    ringMaterial: false
+    steadyColor: false
+    stepNumber: false
+    warnColor: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - ringMaterial: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      stepNumber: !<float> 1.000000
+      ringDiameterCm: !<float> 6.000000
+      steadyColor: !<Vec3> {x: 1.000000, y: 0.820000, z: 0.300000}
+      pulseColor: !<Vec3> {x: 1.000000, y: 1.000000, z: 0.700000}
+      doneColor: !<Vec3> {x: 0.450000, y: 0.950000, z: 0.550000}
+      warnColor: !<Vec3> {x: 1.000000, y: 0.300000, z: 0.250000}
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">JumpwiseMarkerUI – numbered ring on a terminal</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References"}'
+    - '// @input Asset.Material ringMaterial {"hint":"Unlit material for the ring (cloned per marker so each can change color)."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - "// @input float stepNumber = 1 {\"hint\":\"Step number shown above the ring. 0 = no number (a zone that is never a step, like the dead battery's - terminal).\", \"widget\":\"spinbox\", \"min\":0, \"max\":9, \"step\":1}"
+    - '// @input float ringDiameterCm = 6 {"hint":"Ring outer diameter in cm. The drop zone is twice this size.", "widget":"slider", "min":3, "max":12, "step":0.5}'
+    - '// @input vec3 steadyColor = "{1.0,0.82,0.3}" {"hint":"Steady ring color (next target, clamp not yet grabbed).", "widget":"color"}'
+    - '// @input vec3 pulseColor = "{1.0,1.0,0.7}" {"hint":"Bright pulsing color once the clamp is grabbed, and the aimed highlight.", "widget":"color"}'
+    - '// @input vec3 doneColor = "{0.45,0.95,0.55}" {"hint":"Finished step: small green tick.", "widget":"color"}'
+    - '// @input vec3 warnColor = "{1.0,0.3,0.25}" {"hint":"Red flash on a wrong drop.", "widget":"color"}'
+    - '// @ui {"widget":"group_end"}'

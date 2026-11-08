@@ -1,0 +1,53 @@
+- !<AssetImportMetadata/29181902-74f0-4196-abba-3c025cc9c2cf>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> a6b18c67-9f21-40dd-bd57-f6663ce5c768
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> a6b18c67-9f21-40dd-bd57-f6663ce5c768
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 0ed66e30-6be7-4f7c-84ec-f3fbbca60e3b
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/0ed66e30-6be7-4f7c-84ec-f3fbbca60e3b>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 36f17170-a77b-4d20-a630-ab8056e78af0
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    scenarioId: false
+    startDelaySec: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - scenarioId: ""
+      startDelaySec: 1.500000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">JumpwiseLeafRunner – run one LEAF scenario on preview start</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input string scenarioId {"hint":"Scenario id to run when the preview starts (e.g. jw-c1-found-battery). Leave empty for normal use."}'
+    - '// @input float startDelaySec = 1.5 {"hint":"Seconds to wait after start before running, so the scene can settle.", "widget":"slider", "min":0.5, "max":5, "step":0.5}'
+    - '// @ui {"widget":"group_end"}'

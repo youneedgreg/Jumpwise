@@ -57,7 +57,8 @@ Then "Start donor car" (Next button), then "Remove clamps", which lights them in
 - Later clamp steps: follow the same pattern, a steady ring and soft clamp glow, then a pulsing ring once the clamp is grabbed (default).
 - Markers: only the next correct target glows; finished steps shrink to a small green tick.
 - "Start donor car": shows only after all four clamps are on.
-- "Remove clamps": shows after "Start donor car" is pinched, then lights the clamps in reverse, black first. A removed clamp goes back to the rack (default).
+- After "Start donor car" is pinched: the card says "Let the donor car run a few minutes, then start the dead car", with a "Dead car started" button (added after checking the order against Edmunds' jump-start guide: the dead car is started before the cables come off).
+- "Remove clamps": shows after "Dead car started" is pinched, then lights the clamps in reverse, black first. A removed clamp goes back to the rack (default).
 - End: a short "Done" card after the last clamp is removed (default).
 - Wrong drop: red flash, short spark sound, clamp returns to the rack, one line on why. For the dead battery's − terminal: "Not here: a spark near the battery can ignite its gases. Use bare metal." (default wording)
 - A clamp dropped away from any terminal returns to the rack with no warning (default).

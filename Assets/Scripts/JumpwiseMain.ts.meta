@@ -1,0 +1,101 @@
+- !<AssetImportMetadata/d351c930-9e5d-4ec7-bc1c-7bbbae2c683f>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 905a7643-15a4-4ee8-b3ea-11b5a9bcdf01
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 905a7643-15a4-4ee8-b3ea-11b5a9bcdf01
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 6409850a-12bf-4a44-8612-d36958606dfe
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/6409850a-12bf-4a44-8612-d36958606dfe>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 783de38d-bc01-46ac-85ed-1946ecba4fc3
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    audio: false
+    clampBlackA: false
+    clampBlackB: false
+    clampRedA: false
+    clampRedB: false
+    dropZoneScale: false
+    foundBatteryUI: false
+    guidance: false
+    markerDeadMinus: false
+    markerDeadPlus: false
+    markerDonorMinus: false
+    markerDonorPlus: false
+    markerGround: false
+    stepCard: false
+    warningSeconds: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - foundBatteryUI: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      stepCard: !<MappingBased.AssignableType_2> 00000000-0000-0000-0000-000000000000
+      guidance: !<MappingBased.AssignableType_3> 00000000-0000-0000-0000-000000000000
+      audio: !<MappingBased.AssignableType_4> 00000000-0000-0000-0000-000000000000
+      clampRedA: !<MappingBased.AssignableType_5> 00000000-0000-0000-0000-000000000000
+      clampRedB: !<MappingBased.AssignableType_6> 00000000-0000-0000-0000-000000000000
+      clampBlackB: !<MappingBased.AssignableType_7> 00000000-0000-0000-0000-000000000000
+      clampBlackA: !<MappingBased.AssignableType_8> 00000000-0000-0000-0000-000000000000
+      markerDeadPlus: !<MappingBased.AssignableType_9> 00000000-0000-0000-0000-000000000000
+      markerDeadMinus: !<MappingBased.AssignableType_10> 00000000-0000-0000-0000-000000000000
+      markerDonorPlus: !<MappingBased.AssignableType_11> 00000000-0000-0000-0000-000000000000
+      markerDonorMinus: !<MappingBased.AssignableType_12> 00000000-0000-0000-0000-000000000000
+      markerGround: !<MappingBased.AssignableType_13> 00000000-0000-0000-0000-000000000000
+      dropZoneScale: !<float> 2.000000
+      warningSeconds: !<float> 4.000000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @ui {"widget":"label", "label":"<span style=\"color: #60A5FA;\">JumpwiseMain – jump-start guide orchestrator</span>"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References: UI"}'
+    - "// @input AssignableType_1 foundBatteryUI {\"hint\":\"The big 'Found battery' button + owner's manual card.\"}"
+    - '// @input AssignableType_2 stepCard {"hint":"The step card and Next button."}'
+    - '// @input AssignableType_3 guidance {"hint":"Chime + edge arrow for targets out of view."}'
+    - '// @input AssignableType_4 audio {"hint":"Chime, spark and clamp-click cues."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References: Clamps"}'
+    - '// @input AssignableType_5 clampRedA {"hint":"Red clamp used in step 1 (dead battery +)."}'
+    - '// @input AssignableType_6 clampRedB {"hint":"Red clamp used in step 2 (donor battery +)."}'
+    - '// @input AssignableType_7 clampBlackB {"hint":"Black clamp used in step 3 (donor battery -)."}'
+    - '// @input AssignableType_8 clampBlackA {"hint":"Black clamp used in step 4 (bare-metal ground point)."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"References: Markers (drop zones)"}'
+    - "// @input AssignableType_9 markerDeadPlus {\"hint\":\"Marker on the dead battery's + terminal (step 1).\"}"
+    - "// @input AssignableType_10 markerDeadMinus {\"hint\":\"Marker on the dead battery's - terminal (never a step; flashes on a wrong drop).\"}"
+    - "// @input AssignableType_11 markerDonorPlus {\"hint\":\"Marker on the donor battery's + terminal (step 2).\"}"
+    - "// @input AssignableType_12 markerDonorMinus {\"hint\":\"Marker on the donor battery's - terminal (step 3).\"}"
+    - '// @input AssignableType_13 markerGround {"hint":"Marker on the bare-metal ground point on the dead car (step 4)."}'
+    - '// @ui {"widget":"group_end"}'
+    - '// @ui {"widget":"separator"}'
+    - '// @ui {"widget":"group_start", "label":"Settings"}'
+    - '// @input float dropZoneScale = 2 {"hint":"Drop zone size as a multiple of the visible ring (brief: twice its visible size).", "widget":"slider", "min":1, "max":4, "step":0.1}'
+    - '// @input float warningSeconds = 4 {"hint":"Seconds the wrong-drop warning stays on the card.", "widget":"slider", "min":1, "max":10, "step":0.5}'
+    - '// @ui {"widget":"group_end"}'

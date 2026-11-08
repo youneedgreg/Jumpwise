@@ -1,0 +1,115 @@
+/**
+ * LEAF scenario — done criteria 4 and 5 (connect half) (test code).
+ *
+ * 4: the last black clamp accepts only the bare-metal ground point, not the
+ *    dead battery's - terminal.
+ * 5 (connect half): "Start donor car" appears only after four correct clamps.
+ * Removal (the other half of 5) is tested in JumpwiseLeafC5Removal.
+ */
+
+import {Scenario} from "Leaf.lspkg/Scenarios/scenario/Scenario"
+import {expect} from "Leaf.lspkg/Utils/common/Expect"
+import {sleep} from "Leaf.lspkg/Utils/common/Utils"
+import {findInteractableByName} from "Leaf.lspkg/Interactors/InteractableUtils"
+import {SPARK_REASON, START_DEAD_TEXT} from "./JumpwiseSteps"
+import {JumpwiseMain} from "./JumpwiseMain"
+import {JumpwiseLeafInteractor} from "./JumpwiseLeafInteractor"
+import {frames, getMain, holdHead, lookAt, note, placeClamp, pressButton, zonePos} from "./JumpwiseLeafHelpers"
+
+function expectNoStartButton(main: JumpwiseMain, when: string): void {
+  expect(main.stepCard.isNextShown()).toBe(false)
+  expect(findInteractableByName("NextButton", undefined, true) === undefined).toBe(true)
+  note(`C5 no "Start donor car" ${when}`)
+}
+
+@component
+export class JumpwiseLeafC4C5FullConnect extends Scenario {
+  async run(): Promise<void> {
+    const main = await getMain()
+    const ix = new JumpwiseLeafInteractor()
+    holdHead()
+    await frames(3)
+    expectNoStartButton(main, "before Found battery")
+    await pressButton(ix, "FoundBatteryButton")
+    await frames(5)
+    expectNoStartButton(main, "after Found battery")
+
+    lookAt(zonePos(main, "deadPlus"))
+    await placeClamp(ix, main, "redA", "deadPlus")
+    expect(main.getStepIndex()).toBe(1)
+    await frames(3)
+    expectNoStartButton(main, "after 1 clamp")
+
+    lookAt(zonePos(main, "donorPlus"))
+    const chimesBefore2 = main.audio.getCounts().chime
+    await placeClamp(ix, main, "redB", "donorPlus")
+    expect(main.getStepIndex()).toBe(2)
+    // Step 3 is on the same (donor) car: no chime.
+    expect(main.audio.getCounts().chime).toBe(chimesBefore2)
+    note("C3 rule: no chime from step 2 to 3 (same car)")
+    await frames(3)
+    expectNoStartButton(main, "after 2 clamps")
+
+    await placeClamp(ix, main, "blackB", "donorMinus")
+    expect(main.getStepIndex()).toBe(3)
+    // Step 4 sends you back to the dead car, behind you: one chime and the arrow.
+    expect(main.audio.getCounts().chime).toBe(chimesBefore2 + 1)
+    expect(main.guidance.isArrowShown()).toBe(true)
+    note("C3 rule: chime + arrow from step 3 to 4 (back to the dead car)")
+    await frames(3)
+    expectNoStartButton(main, "after 3 clamps")
+
+    // Criterion 4: the last black clamp on the dead battery's - is refused.
+    lookAt(zonePos(main, "deadMinus"))
+    const sparks = main.audio.getCounts().spark
+    await placeClamp(ix, main, "blackA", "deadMinus")
+    expect(main.getStepIndex()).toBe(3)
+    expect(main.stepCard.isWarningShown()).toBe(true)
+    expect(main.stepCard.getMessage()).toBe(SPARK_REASON)
+    expect(main.audio.getCounts().spark).toBe(sparks + 1)
+    expect(main.getMarker("deadMinus").isFlashing()).toBe(true)
+    await sleep(700)
+    const blackA = main.getClamp("blackA")
+    expect(blackA.getTransform().getWorldPosition().distance(blackA.getHomePosition())).toBeLessThan(0.5)
+    expectNoStartButton(main, "after the refused drop on dead -")
+    note(`C4 dead - refused with: "${SPARK_REASON}"`)
+
+    // ...and the bare-metal ground point is accepted.
+    lookAt(zonePos(main, "ground"))
+    await placeClamp(ix, main, "blackA", "ground")
+    expect(main.getPhase()).toBe("startDonor")
+    expect(main.getMarker("ground").getState()).toBe("done")
+    note("C4 ground point accepted")
+
+    // Criterion 5 (connect half): now and only now the button shows.
+    await frames(5)
+    expect(main.stepCard.getMessage()).toBe("Start the donor car")
+    expect(main.stepCard.isNextShown()).toBe(true)
+    const next = findInteractableByName("NextButton", undefined, true)
+    expect(next !== undefined).toBe(true)
+    note("C5 \"Start donor car\" shown after four correct clamps")
+    for (const z of ["deadPlus", "donorPlus", "donorMinus", "ground"]) {
+      expect(main.getMarker(z as any).getState()).toBe("done")
+    }
+    expect(main.getMarker("deadMinus").getState()).toBe("hidden")
+
+    lookAt(main.stepCard.getTransform().getWorldPosition())
+    await frames(3)
+    await pressButton(ix, "NextButton")
+    await frames(5)
+    expect(main.getPhase()).toBe("donorStarted")
+    // Next: start the dead car before any clamp comes off (brief, after Edmunds).
+    expect(main.stepCard.getMessage()).toBe(START_DEAD_TEXT)
+    expect(main.stepCard.isNextShown()).toBe(true)
+    expect(main.stepCard.getNextLabel()).toBe("Dead car started")
+    note("C5 after Start donor car: card asks to start the dead car")
+    await frames(3)
+    await pressButton(ix, "NextButton")
+    await frames(5)
+    expect(main.getPhase()).toBe("deadStarted")
+    // Phase 2: the same Next button now offers "Remove clamps" (brief: shows after "Dead car started" is pinched).
+    expect(main.stepCard.isNextShown()).toBe(true)
+    expect(main.stepCard.getNextLabel()).toBe("Remove clamps")
+    note("C5 connect half done")
+  }
+}
