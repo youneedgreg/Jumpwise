@@ -15,6 +15,7 @@ import {JumpwiseLeafRiskTurnDrag} from "./JumpwiseLeafRiskTurnDrag"
 import {JumpwiseLeafViewStart} from "./JumpwiseLeafViewStart"
 import {JumpwiseLeafViewStep1} from "./JumpwiseLeafViewStep1"
 import {JumpwiseLeafViewLongText} from "./JumpwiseLeafViewLongText"
+import {JumpwiseLeafDemoWalkthrough} from "./JumpwiseLeafDemoWalkthrough"
 
 @component
 export class JumpwiseLeafIndex extends BaseScriptComponent {
@@ -30,5 +31,7 @@ export class JumpwiseLeafIndex extends BaseScriptComponent {
     {id: "jw-view-start", typename: JumpwiseLeafViewStart.getTypeName()},
     {id: "jw-view-step1", typename: JumpwiseLeafViewStep1.getTypeName()},
     {id: "jw-view-long-text", typename: JumpwiseLeafViewLongText.getTypeName()},
+    // paced full walkthrough for the demo video (no assertions)
+    {id: "jw-demo-walkthrough", typename: JumpwiseLeafDemoWalkthrough.getTypeName()},
   ]
 }
